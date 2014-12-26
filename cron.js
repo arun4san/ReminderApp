@@ -20,7 +20,6 @@ module.exports = function (Reminder) {
                         async.forEach(reminders, function (event, callback){
 
                             if (!event.isMailCompleted) {
-                                    console.log("mail.........",event.email);
                                     EM.sendAlert(event,event.email,callback)
                                     event.isMailCompleted = true
                                     event.save();
