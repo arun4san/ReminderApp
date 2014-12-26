@@ -33,6 +33,7 @@ var reminderSchema = mongoose.Schema({
     eventName: String,
     isMailCompleted: Boolean,
     isPBCompleted: Boolean,
+    isEventStarted: Boolean,
     email:String,
     end : { type: Date, default: moment().add('hours', 1).toDate()},
     remindMeForMail : { type: Date, default: moment().add('hours', 1).toDate() },

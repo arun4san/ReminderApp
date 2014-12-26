@@ -12,7 +12,7 @@ module.exports = function (Reminder) {
 
                 emailNotification : function(cb){
 
-                    Reminder.find({ 'remindMeForMail': { $lt: Date.now() } }, function (err, reminders) {
+                    Reminder.find({ 'remindMeForMail': { $lte: Date.now() } }, function (err, reminders) {
                         if (err) {
                             console.log(err);
                             return;
@@ -36,7 +36,7 @@ module.exports = function (Reminder) {
                 },
                 pBNotification : function(cb){
 
-                    Reminder.find({ 'remindMeForPB': { $lt: Date.now() } }, function (err, reminders) {
+                    Reminder.find({ 'remindMeForPB': { $lte: Date.now() } }, function (err, reminders) {
                         if (err) {
                             console.log(err);
                             return;
@@ -47,6 +47,30 @@ module.exports = function (Reminder) {
 
                                 pushbullet.sendPushBullet(event,callback)
                                 event.isPBCompleted = true
+                                event.save();
+                                cb();
+
+                            }
+                        }, function(err) {
+                            //console.log("Event pBNotification completed..")
+                        });
+                    });
+
+                },
+                startOfTaskPBNotification : function(cb){
+
+                    Reminder.find({ 'end': { $lte: Date.now() } }, function (err, reminders) {
+
+                        if (err) {
+                            console.log(err);
+                            return;
+                        }
+                        async.forEach(reminders, function (event, callback){
+
+                            if (!event.isEventStarted) {
+
+                                pushbullet.sendPushBullet(event,callback)
+                                event.isEventStarted = true;
                                 event.save();
                                 cb();
 
