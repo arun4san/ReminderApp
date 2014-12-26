@@ -1,4 +1,0 @@
-ReminderApp
-===========
-
-Event Reminder App
